@@ -1,0 +1,471 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      @font-face {
+        font-family: 'Brush Strokes';
+        src: url('fonts/Brush Strokes.ttf');
+      }
+
+      div{ font-family: Brush Strokes; }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="kinetic-v4.4.3.min.js"></script>
+    <script defer="defer">
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 1920,
+        height: 1080
+      });
+      var home_layer = new Kinetic.Layer();
+      var us_layer = new Kinetic.Layer();
+
+      //homescreen
+      var background = new Image();
+      var img_map = new Image();
+      var img_logo = new Image();
+      var img_space = new Image();
+      var img_space_glow = new Image();
+      var img_form = new Image();
+      var img_time = new Image();
+      var img_others = new Image();
+      
+      //highlight spots
+      var hl_p1 = new Image();
+      var hl_p1_orange = new Image();
+      var hl_p2 = new Image();
+      var hl_p2_orange = new Image();
+      var hl_azalea = new Image();
+      var hl_bonsai = new Image();
+      var hl_cherry = new Image();
+      var hl_gate = new Image();
+      var hl_teaherb = new Image();
+
+      //US map layout
+      var img_usmap = new Image();
+      var img_portland = new Image();
+      var img_sanmarino = new Image();
+      var img_longbeach = new Image();
+      var img_sandiego = new Image();
+      var img_phoenix = new Image();
+      var img_stlouis = new Image();
+      var img_return = new Image();
+
+
+      background.onload = function() {
+        //Home screen
+        var scroll = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: background,
+          width: 1920,
+          height: 1080
+        });
+
+        var map = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: img_map
+        });
+
+        var logo = new Kinetic.Image({
+          x: 155,
+          y: 22,
+          image: img_logo
+        });
+
+        var space = new Kinetic.Image({
+          x: 248,
+          y: 396,
+          image: img_space
+        });
+
+        var space_glow = new Kinetic.Image({
+          x: 248,
+          y: 396,
+          opacity: 0,
+          image: img_space_glow
+        });
+
+        var txt_space = new Kinetic.Text({
+          x: 285,
+          y: 639,
+          text: 'Space',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 72,
+          fill: '#9e0b0f',
+        });
+
+        var grp_space = new Kinetic.Group();
+        grp_space.add(space);
+        //grp_space.add(space_glow)
+        grp_space.add(txt_space);
+
+        var form = new Kinetic.Image({
+          x: 88,
+          y: 714,
+          image: img_form
+        });
+
+        var txt_form = new Kinetic.Text({
+          x: 158,
+          y: 967,
+          text: 'Form',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 72,
+          fill: '#224429',
+        });
+
+        var grp_form = new Kinetic.Group();
+        grp_form.add(form);
+        grp_form.add(txt_form);
+
+        var time = new Kinetic.Image({
+          x: 446,
+          y: 722,
+          image: img_time
+        });
+
+        var txt_time = new Kinetic.Text({
+          x: 517,
+          y: 967,
+          text: 'Time',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 72,
+          fill: '#003471',
+        });
+
+        var grp_time = new Kinetic.Group();
+        grp_time.add(time);
+        grp_time.add(txt_time);
+
+        var others = new Kinetic.Image({
+          x: 1588,
+          y: 763,
+          image: img_others
+        });
+
+        var txt_others = new Kinetic.Text({
+          x: 1595,
+          y: 937,
+          text: 'Visit other\ngardens',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 48,
+          fill: 'black',
+        });
+
+        var p1 = new Kinetic.Image({
+          x: 965 + 41,
+          y: 100 + 44,
+          image: hl_p1,         
+          offset: [41, 44],
+          rotation: Math.PI / 1
+        });
+
+        var p1_orange = new Kinetic.Image({
+          x: 965 + 41,
+          y: 100 + 44,
+          image: hl_p1_orange,         
+          offset: [41, 44],
+          rotation: Math.PI / 1
+        });
+
+        var p2 = new Kinetic.Image({
+          x: 1033 + 41,
+          y: 490 + 47,
+          image: hl_p2,  
+          offset: [41, 47],
+          rotation: Math.PI / 2
+        });
+
+        var p2_orange = new Kinetic.Image({
+          x: 1033 + 41,
+          y: 490 + 47,
+          image: hl_p2_orange,  
+          offset: [41, 47],
+          rotation: Math.PI / 2
+        });
+
+        var azalea = new Kinetic.Image({
+          x: 1176 + 41,
+          y: 421 + 47,
+          image: hl_azalea,
+          offset: [41, 47],
+          rotation: Math.PI / 2
+        });
+
+        var bonsai = new Kinetic.Image({
+          x: 1025 + 41,
+          y: 680 + 47,
+          image: hl_bonsai,  
+          offset: [41, 47],
+          rotation: Math.PI / 4
+        });
+
+        var cherry = new Kinetic.Image({
+          x: 1257 + 41,
+          y: 237 + 44,
+          image: hl_cherry,  
+          offset: [41, 44],
+          rotation: Math.PI / 3
+        });
+
+        var gate = new Kinetic.Image({
+          x: 1045 + 41,
+          y: 768 + 44,
+          image: hl_gate,  
+          offset: [41, 44],
+          rotation: Math.PI / 3
+        });
+
+        var teaherb = new Kinetic.Image({
+          x: 1123 + 41,
+          y: 601 + 44,
+          image: hl_teaherb,  
+          offset: [41, 44],
+          rotation: Math.PI / 1
+        });
+
+        var grp_others = new Kinetic.Group();
+        grp_others.add(others);
+        grp_others.add(txt_others);
+
+        home_layer.add(scroll);
+        home_layer.add(map);
+        home_layer.add(logo);
+        home_layer.add(grp_space);
+        home_layer.add(space_glow);
+        home_layer.add(grp_form)
+        home_layer.add(grp_time);
+        home_layer.add(grp_others);
+        home_layer.add(p1);
+        home_layer.add(p1_orange);
+        home_layer.add(p2);
+        home_layer.add(p2_orange);
+        home_layer.add(azalea);
+        home_layer.add(bonsai);
+        home_layer.add(cherry);
+        home_layer.add(gate);
+        home_layer.add(teaherb);
+
+        stage.add(home_layer);
+
+        //Homescreen tweens
+        var space_glowon = new Kinetic.Tween({
+          node: space_glow,
+          duration: 1,
+          opacity: 1
+        });
+        
+        var space_glowoff = new Kinetic.Tween({
+          node: space_glow,
+          duration: 1,
+          opacity: 0
+        });
+
+        setTimeout(function() {
+          space_glowon.play();
+        }, 1000);
+
+        //Animation
+        var amplitude = 1 / 2;
+        var period = 1500;
+        var anim = new Kinetic.Animation(function(frame) {
+          p1_orange.setOpacity(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + 0.5);
+          p2_orange.setOpacity(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + 0.5);
+        }, home_layer);
+
+        grp_space.on('mousedown touchstart', function() {
+          space_glowon.play();
+        });
+
+        grp_space.on('mouseup touchend', function() {
+          space_glowoff.play();
+        });
+
+        anim.start();
+
+        /* ----- US map screen ----- */
+
+        var usmap = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: img_usmap
+        });
+
+        var portland = new Kinetic.Image({
+          x: 366,
+          y: 212,
+          image: img_portland
+        });
+
+        var txt_portland = new Kinetic.Text({
+          x: 450,
+          y: 235,
+          text: 'Portland',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 60,
+          fill: '#9e0b0f',
+        });
+
+        var sanmarino = new Kinetic.Image({
+          x: 406,
+          y: 745,
+          image: img_sanmarino
+        });
+
+        var txt_sanmarino = new Kinetic.Text({
+          x: 490,
+          y: 755,
+          text: 'San Marino',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 60,
+          fill: '#9e0b0f',
+        });
+
+        var longbeach = new Kinetic.Image({
+          x: 332,
+          y: 775,
+          image: img_longbeach
+        });
+
+        var txt_longbeach = new Kinetic.Text({
+          x: 43,
+          y: 800,
+          text: 'Long Beach',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 60,
+          fill: '#9e0b0f',
+        });
+
+        var phoenix = new Kinetic.Image({
+          x: 640,
+          y: 847,
+          image: img_phoenix
+        });
+
+        var txt_phoenix = new Kinetic.Text({
+          x: 723,
+          y: 870,
+          text: 'Phoenix',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 60,
+          fill: '#9e0b0f',
+        });
+
+        var sandiego = new Kinetic.Image({
+          x: 386,
+          y: 835,
+          image: img_sandiego
+        });
+
+        var txt_sandiego = new Kinetic.Text({
+          x: 20,
+          y: 880,
+          text: 'San Diego',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 85,
+          fill: '#9e0b0f',
+        });
+
+        var stlouis = new Kinetic.Image({
+          x: 1020,
+          y: 492,
+          image: img_stlouis
+        });
+
+        var txt_stlouis = new Kinetic.Text({
+          x: 1110,
+          y: 505,
+          text: 'St. Louis',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 60,
+          fill: '#9e0b0f',
+        });
+
+        var returnus = new Kinetic.Image({
+          x: 1588,
+          y: 763,
+          image: img_return
+        });
+
+        var txt_returnus = new Kinetic.Text({
+          x: 1595,
+          y: 937,
+          text: 'Return to\nSan Diego',
+          align: 'center',
+          fontFamily: 'Brush Strokes',
+          fontSize: 48,
+          fill: 'black',
+        });
+
+        us_layer.add(scroll);
+        us_layer.add(usmap);
+        us_layer.add(portland);
+        us_layer.add(txt_portland);
+        us_layer.add(sanmarino);
+        us_layer.add(txt_sanmarino);
+        us_layer.add(longbeach);
+        us_layer.add(txt_longbeach);
+        us_layer.add(phoenix);
+        us_layer.add(txt_phoenix);
+        us_layer.add(sandiego);
+        us_layer.add(txt_sandiego);
+        us_layer.add(stlouis);
+        us_layer.add(txt_stlouis);
+        us_layer.add(returnus);
+        us_layer.add(txt_returnus);
+
+        // add the layer to the stage
+        //stage.add(us_layer);
+        
+      };
+      
+
+      background.src = 'images/scroll_bg.jpg';
+      img_logo.src = 'images/jfg_logo.png';
+      img_space.src = 'images/space.png';
+      img_space_glow.src = 'images/space_glow.png';
+      img_form.src = 'images/form.png';
+      img_time.src = 'images/time.png';
+      img_map.src = 'images/jfg_map.png';
+      img_others.src = 'images/others.png';
+      img_usmap.src = 'images/us_map2.png';
+      img_portland.src = 'images/circle1.png';
+      img_sanmarino.src = 'images/circle2.png';
+      img_longbeach.src = 'images/circle1.png';
+      img_portland.src = 'images/circle1.png';
+      img_phoenix.src = 'images/circle1.png';
+      img_sandiego.src = 'images/sd_circle.png';
+      img_stlouis.src = 'images/circle2.png';
+      img_return.src = 'images/return.png';
+      hl_p1.src = 'images/white_circle1.png';
+      hl_p1_orange.src = 'images/orange_circle1.png';
+      hl_p2.src = 'images/white_circle2.png';
+      hl_p2_orange.src = 'images/orange_circle2.png';
+      hl_azalea.src = 'images/white_circle2.png';
+      hl_bonsai.src = 'images/white_circle2.png';
+      hl_cherry.src = 'images/white_circle1.png';
+      hl_gate.src = 'images/white_circle1.png';
+      hl_teaherb.src = 'images/white_circle1.png';
+
+    </script>
+  </body>
+</html>
