@@ -1,10 +1,15 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="fb-source/jquery.fancybox.js?v=2.1.4"></script>
+    <link rel="stylesheet" type="text/css" href="fb-source/jquery.fancybox.css?v=2.1.4" media="screen" />
+
     <style>
       body {
         margin: 0px;
         padding: 0px;
+        /*overflow: hidden;*/
       }
 
       @font-face {
@@ -17,7 +22,8 @@
   </head>
   <body>
     <div id="container"></div>
-    <script src="kinetic-v4.4.3.min.js"></script>
+    <script src="kinetic-v4.5.3.min.js"></script>
+    <!-- GET THIS VERSION OF TWEENER --> 
     <script defer="defer">
       var stage = new Kinetic.Stage({
         container: 'container',
@@ -34,8 +40,11 @@
       var img_space = new Image();
       var img_space_glow = new Image();
       var img_form = new Image();
+      var img_form_glow = new Image();
       var img_time = new Image();
+      var img_time_glow = new Image();
       var img_others = new Image();
+      var img_others_glow = new Image();
       
       //highlight spots
       var hl_p1 = new Image();
@@ -106,13 +115,20 @@
 
         var grp_space = new Kinetic.Group();
         grp_space.add(space);
-        //grp_space.add(space_glow)
+        grp_space.add(space_glow);
         grp_space.add(txt_space);
 
         var form = new Kinetic.Image({
           x: 88,
           y: 714,
           image: img_form
+        });
+
+        var form_glow = new Kinetic.Image({
+          x: 88,
+          y: 714,
+          opacity: 0,
+          image: img_form_glow
         });
 
         var txt_form = new Kinetic.Text({
@@ -127,12 +143,20 @@
 
         var grp_form = new Kinetic.Group();
         grp_form.add(form);
+        grp_form.add(form_glow);
         grp_form.add(txt_form);
 
         var time = new Kinetic.Image({
           x: 446,
           y: 722,
           image: img_time
+        });
+
+        var time_glow = new Kinetic.Image({
+          x: 446,
+          y: 722,
+          opacity: 0,
+          image: img_time_glow
         });
 
         var txt_time = new Kinetic.Text({
@@ -147,12 +171,20 @@
 
         var grp_time = new Kinetic.Group();
         grp_time.add(time);
+        grp_time.add(time_glow);
         grp_time.add(txt_time);
 
         var others = new Kinetic.Image({
           x: 1588,
           y: 763,
           image: img_others
+        });
+
+        var others_glow = new Kinetic.Image({
+          x: 1588,
+          y: 763,
+          opacity: 0,
+          image: img_others_glow
         });
 
         var txt_others = new Kinetic.Text({
@@ -164,6 +196,11 @@
           fontSize: 48,
           fill: 'black',
         });
+
+        var grp_others = new Kinetic.Group();
+        grp_others.add(others);
+        grp_others.add(others_glow);
+        grp_others.add(txt_others);
 
         var p1 = new Kinetic.Image({
           x: 965 + 41,
@@ -237,18 +274,9 @@
           rotation: Math.PI / 1
         });
 
-        var grp_others = new Kinetic.Group();
-        grp_others.add(others);
-        grp_others.add(txt_others);
-
         home_layer.add(scroll);
         home_layer.add(map);
         home_layer.add(logo);
-        home_layer.add(grp_space);
-        home_layer.add(space_glow);
-        home_layer.add(grp_form)
-        home_layer.add(grp_time);
-        home_layer.add(grp_others);
         home_layer.add(p1);
         home_layer.add(p1_orange);
         home_layer.add(p2);
@@ -258,25 +286,30 @@
         home_layer.add(cherry);
         home_layer.add(gate);
         home_layer.add(teaherb);
+        home_layer.add(grp_space);
+        home_layer.add(grp_form)
+        home_layer.add(grp_time);
+        home_layer.add(grp_others);
 
         stage.add(home_layer);
 
         //Homescreen tweens
-        var space_glowon = new Kinetic.Tween({
+        /*var space_glowon = new Kinetic.Tween({
           node: space_glow,
-          duration: 1,
+          duration: 0.5,
           opacity: 1
         });
         
         var space_glowoff = new Kinetic.Tween({
           node: space_glow,
-          duration: 1,
+          duration: 0.5,
           opacity: 0
         });
 
         setTimeout(function() {
           space_glowon.play();
-        }, 1000);
+          console.log("called");
+        }, 1000);*/
 
         //Animation
         var amplitude = 1 / 2;
@@ -286,15 +319,116 @@
           p2_orange.setOpacity(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + 0.5);
         }, home_layer);
 
+        anim.start();
+
         grp_space.on('mousedown touchstart', function() {
-          space_glowon.play();
+          space_glow.setOpacity(1);
+          txt_space.setFill('#f5494e');
         });
 
         grp_space.on('mouseup touchend', function() {
-          space_glowoff.play();
+          space_glow.setOpacity(0);
+          txt_space.setFill('#9e0b0f');
         });
 
-        anim.start();
+
+        grp_form.on('mousedown touchstart', function() {
+          form_glow.setOpacity(1);
+          txt_form.setFill('#197b30');
+        });
+
+        grp_form.on('mouseup touchend', function() {
+          form_glow.setOpacity(0);
+          txt_form.setFill('#224429');
+        });
+
+
+        grp_time.on('mousedown touchstart', function() {
+          time_glow.setOpacity(1);
+          txt_time.setFill('#3c7ac3');
+        });
+
+        grp_time.on('mouseup touchend', function() {
+          time_glow.setOpacity(0);
+          txt_time.setFill('#003471');
+        });
+
+
+        grp_others.on('mousedown touchstart', function() {
+          others_glow.setOpacity(1);
+          txt_others.setFill('#666666');
+          console.log("others down");
+        });
+
+        grp_others.on('mouseup touchend', function() {
+          others_glow.setOpacity(0);
+          txt_others.setFill('black');
+          console.log("others up");
+        });
+
+
+        p1_orange.on('mousedown touchstart', function() {
+          console.log("p1 down");
+        });
+
+        p1_orange.on('mouseup touchend', function() {
+          console.log("p1 up");
+        });
+
+
+        p2_orange.on('mousedown touchstart', function() {
+          console.log("p2 down");
+        });
+
+        p2_orange.on('mouseup touchend', function() {
+          console.log("p2 up");
+        });
+
+
+        azalea.on('mousedown touchstart', function() {
+          console.log("azalea down");
+        });
+
+        azalea.on('mouseup touchend', function() {
+          console.log("azalea up");
+        });
+
+
+        bonsai.on('mousedown touchstart', function() {
+          console.log("bonsai down");
+        });
+
+        bonsai.on('mouseup touchend', function() {
+          console.log("bonsai up");
+        });
+
+
+        cherry.on('mousedown touchstart', function() {
+          console.log("cherry down");
+        });
+
+        cherry.on('mouseup touchend', function() {
+          console.log("cherry up");
+        });
+
+
+        gate.on('mousedown touchstart', function() {
+          console.log("gate down");
+        });
+
+        gate.on('mouseup touchend', function() {
+          console.log("gate up");
+        });
+
+
+        teaherb.on('mousedown touchstart', function() {
+          console.log("teaherb down");
+        });
+
+        teaherb.on('mouseup touchend', function() {
+          console.log("teaherb up");
+        });
+
 
         /* ----- US map screen ----- */
 
@@ -444,9 +578,12 @@
       img_space.src = 'images/space.png';
       img_space_glow.src = 'images/space_glow.png';
       img_form.src = 'images/form.png';
+      img_form_glow.src = 'images/form_glow.png';
       img_time.src = 'images/time.png';
+      img_time_glow.src = 'images/time_glow.png';
       img_map.src = 'images/jfg_map.png';
       img_others.src = 'images/others.png';
+      img_others_glow.src = 'images/others_glow.png';
       img_usmap.src = 'images/us_map2.png';
       img_portland.src = 'images/circle1.png';
       img_sanmarino.src = 'images/circle2.png';
