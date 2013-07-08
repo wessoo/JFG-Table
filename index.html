@@ -2,8 +2,24 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
     <script type="text/javascript" src="fb-source/jquery.fancybox.js?v=2.1.4"></script>
     <link rel="stylesheet" type="text/css" href="fb-source/jquery.fancybox.css?v=2.1.4" media="screen" />
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+
+        $('.fancybox').fancybox({
+
+          openSpeed : 550,
+          closeSpeed  : 450,
+          closeBtn : false,
+
+        });
+
+
+      });
+    </script>
 
     <style>
       body {
@@ -17,7 +33,28 @@
         src: url('fonts/Brush Strokes.ttf');
       }
 
-      div{ font-family: Brush Strokes; }
+      /*div{ font-family: Brush Strokes; }*/
+
+      .fancybox-opened .fancybox-skin {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        -webkit-filter: drop-shadow(0px 0px 50px #222) !important;
+        -moz-filter: drop-shadow(0px 0px 50px #222) !important;
+      }
+
+      .fancybox-skin {
+        background: none !important;
+        background: url(images/header.png) center top no-repeat, url(images/footer2.png) center bottom no-repeat, url(images/content_bg2.png) center top no-repeat !important;
+        /*background-position: 0px 0px, 0px 234.5px, 16px 40px !important;*/
+      }
+
+      .scroll {
+        margin-top: 100px;
+        margin-right: 30px;
+        margin-bottom: 100px;
+        margin-left: 30px;
+        color: black;
+      }
     </style>
   </head>
   <body>
@@ -329,6 +366,12 @@
         grp_space.on('mouseup touchend', function() {
           space_glow.setOpacity(0);
           txt_space.setFill('#9e0b0f');
+
+          $('#tester').click();
+
+          /*var link = $("#link_0");
+          link.click();
+          window.location.href = link.attr("href");*/
         });
 
 
@@ -340,6 +383,8 @@
         grp_form.on('mouseup touchend', function() {
           form_glow.setOpacity(0);
           txt_form.setFill('#224429');
+
+          $('#tester').click();
         });
 
 
@@ -351,6 +396,8 @@
         grp_time.on('mouseup touchend', function() {
           time_glow.setOpacity(0);
           txt_time.setFill('#003471');
+
+          $('#tester').click();
         });
 
 
@@ -604,5 +651,20 @@
       hl_teaherb.src = 'images/white_circle1.png';
 
     </script>
+
+    <!-- CONTENT WINDOW BLOCK SAMPLE -->
+    <a class="fancybox" id="tester" href="#inline1" style="display: none;">OH SNAP!</a>
+    <div id="inline1" style="width:960px;display: none;">
+    <div class="scroll">
+    <h3>Etiam quis mi eu elit</h3>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br>
+
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br>
+
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+    </p>
+    </div>
+  </div>
   </body>
 </html>
