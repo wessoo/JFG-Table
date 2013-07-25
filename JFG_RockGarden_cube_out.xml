@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panorama id="">
+  <view fovmode="0" pannorth="0">
+    <start pan="0" fov="70" tilt="0"/>
+    <min pan="0" fov="5" tilt="-90"/>
+    <max pan="360" fov="120" tilt="90"/>
+  </view>
+  <userdata title="C:\Users\Modern Felvet\Pictures\JFG Trip\JFGSD\RockGarden\JFG_RockGarden_cube_0.tif" datetime="2012:10:10 20:11:32" description="" copyright="" tags="" author="" source="" comment="" info="" longitude="" latitude=""/>
+  <hotspots width="180" height="20" wordwrap="1">
+    <label width="180" backgroundalpha="1" enabled="0" height="20" backgroundcolor="0xffffff" bordercolor="0x000000" border="1" textcolor="0x000000" background="1" borderalpha="1" borderradius="1" wordwrap="1" textalpha="1"/>
+    <polystyle mode="0" backgroundalpha="0.2509803921568627" backgroundcolor="0x0000ff" bordercolor="0x0000ff" borderalpha="1"/>
+    <hotspot title="Nobedan" target="_self" pan="96.33920000000001" skinid="" url="javascript:getContent('nobedan');" id="Point01" tilt="-45.297"/>
+    <hotspot title="Fujidana" target="_self" pan="121.412" skinid="" url="javascript:getContent('fujidana');" id="Point02" tilt="21.7788"/>
+    <hotspot title="Rock Garden" target="_self" pan="39.9944" skinid="" url="javascript:getContent('rockgarden');" id="Point04" tilt="-12.1909"/>
+    <hotspot title="Koi Pond" target="_self" pan="-131.546" skinid="" url="javascript:getContent('koipond');" id="Point05" tilt="-18.8539"/>
+    <hotspot title="Moon Viewing Deck" target="_self" pan="-88" skinid="" url="javascript:getContent('deck');" id="Point06" tilt="-13.5972"/>
+    <hotspot title="Tsukubai" target="_self" pan="80.6471" skinid="" url="javascript:getContent('tsukubai');" id="Point07" tilt="-29.4118"/>
+    <hotspot title="Lantern" target="_self" pan="75.33920000000001" skinid="" url="javascript:getContent('lantern');" id="Point08" tilt="-12.3138"/>
+    <hotspot title="Koi Fish" target="_self" pan="-115.81" skinid="" url="javascript:getContent('koifish');" id="Point09" tilt="-20.3753"/>
+  </hotspots>
+  <media/>
+  <input tile0url="rockgarden_images/JFG_RockGarden_cube_o_0.jpg" prev5url="rockgarden_images/JFG_RockGarden_cube_o_preview_5.jpg" prev4url="rockgarden_images/JFG_RockGarden_cube_o_preview_4.jpg" prev3url="rockgarden_images/JFG_RockGarden_cube_o_preview_3.jpg" prev2url="rockgarden_images/JFG_RockGarden_cube_o_preview_2.jpg" prev1url="rockgarden_images/JFG_RockGarden_cube_o_preview_1.jpg" prev0url="rockgarden_images/JFG_RockGarden_cube_o_preview_0.jpg" tile5url="rockgarden_images/JFG_RockGarden_cube_o_5.jpg" tilesize="1542" tile4url="rockgarden_images/JFG_RockGarden_cube_o_4.jpg" tile3url="rockgarden_images/JFG_RockGarden_cube_o_3.jpg" tilescale="1.006485084306096" tile2url="rockgarden_images/JFG_RockGarden_cube_o_2.jpg" tile1url="rockgarden_images/JFG_RockGarden_cube_o_1.jpg"/>
+  <control simulatemass="1" lockedmouse="0" lockedkeyboard="0" dblclickfullscreen="0" invertwheel="0" lockedwheel="0" invertcontrol="1" speedwheel="1" sensitivity="8"/>
+</panorama>

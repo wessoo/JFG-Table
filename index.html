@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="fb-source/jquery.fancybox.css?v=2.1.4" media="screen" />
 
     <script type="text/javascript">
+      var shade = false;
+      var page = 0; //0: JFG page, 1: Other gardens page
+
       $(document).ready(function() {
 
         $('.fancybox').fancybox({
@@ -14,18 +17,56 @@
           openSpeed : 550,
           closeSpeed  : 450,
           closeBtn : false,
+          helpers: {
+              overlay: {
+                  locked: false
+              }
+          }
 
         });
 
+        //Temporary
+        $('#overlay').click(function() {
+          lightsOn();
+        });
+
+        $('#btn_back').click(function() {
+          //Exit the panorama
+
+        });
 
       });
+
+      /*
+       * Get content by its ID string
+       */
+      function getContent(contentid) {
+        $('#'+String(contentid)).click();
+      }
+
+      /*
+       * Turn lights out, black out screen.
+       */
+      function lightsOut() {
+        $('#overlay').css('display', 'block').fadeTo('slow', 1);
+      }
+
+      /*
+       * Turn lights back on, lighten screen.
+       */
+      function lightsOn() {
+        $('#overlay').animate({opacity: 0}, 'slow', function() {
+          $('#overlay').css('display', 'none');
+        });
+      }
+
     </script>
 
     <style>
       body {
         margin: 0px;
         padding: 0px;
-        /*overflow: hidden;*/
+        overflow: hidden;
       }
 
       @font-face {
@@ -33,7 +74,12 @@
         src: url('fonts/Brush Strokes.ttf');
       }
 
-      /*div{ font-family: Brush Strokes; }*/
+      @font-face {
+        font-family: 'ITL';
+        src: url('fonts/IgniteTheLight.ttf');
+      }
+
+      div{ font-family: ITL; font-size: 18px; }
 
       .fancybox-opened .fancybox-skin {
         -webkit-box-shadow: none;
@@ -53,8 +99,44 @@
         margin-right: 30px;
         margin-bottom: 100px;
         margin-left: 30px;
-        color: black;
+        color: #2D2D2D;
       }
+
+      #overlay {
+        width: 100%;
+        height: 100%;
+        display: none;
+        background-color: black;
+        opacity: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0
+        bottom: 0;
+        z-index: 9000;
+      }
+
+      #btn_back {
+        position: fixed;
+        bottom: 10px;
+        width: inherit;
+        left: 50%;
+        margin-left: -100px;
+        z-index: 9001;
+
+        display: none;
+        opacity: 0;
+      }
+
+      #btn_back span {
+        display: block;
+        text-align: center;
+        color: white;
+        font-family: 'Brush Strokes';
+        font-size: 48px;
+        text-shadow: 0 0 5px black;
+      }
+
     </style>
   </head>
   <body>
@@ -358,6 +440,21 @@
 
         anim.start();
 
+        /*
+         * Used to reset buttons to default color if accidentally dragged
+         */
+        stage.on('mouseup' , function() {
+          space_glow.setOpacity(0);
+          txt_space.setFill('#9e0b0f');
+          form_glow.setOpacity(0);
+          txt_form.setFill('#224429');
+          time_glow.setOpacity(0);
+          txt_time.setFill('#003471');
+
+          others_glow.setOpacity(0);
+          txt_others.setFill('black');
+        });
+
         grp_space.on('mousedown touchstart', function() {
           space_glow.setOpacity(1);
           txt_space.setFill('#f5494e');
@@ -366,12 +463,7 @@
         grp_space.on('mouseup touchend', function() {
           space_glow.setOpacity(0);
           txt_space.setFill('#9e0b0f');
-
-          $('#tester').click();
-
-          /*var link = $("#link_0");
-          link.click();
-          window.location.href = link.attr("href");*/
+          getContent('space');
         });
 
 
@@ -383,8 +475,7 @@
         grp_form.on('mouseup touchend', function() {
           form_glow.setOpacity(0);
           txt_form.setFill('#224429');
-
-          $('#tester').click();
+          getContent('form');
         });
 
 
@@ -396,8 +487,7 @@
         grp_time.on('mouseup touchend', function() {
           time_glow.setOpacity(0);
           txt_time.setFill('#003471');
-
-          $('#tester').click();
+          getContent('time');
         });
 
 
@@ -433,47 +523,42 @@
 
 
         azalea.on('mousedown touchstart', function() {
-          console.log("azalea down");
         });
 
         azalea.on('mouseup touchend', function() {
-          console.log("azalea up");
+          getContent('azalea');
         });
 
 
         bonsai.on('mousedown touchstart', function() {
-          console.log("bonsai down");
         });
 
         bonsai.on('mouseup touchend', function() {
-          console.log("bonsai up");
+          getContent('bonsai');
         });
 
 
         cherry.on('mousedown touchstart', function() {
-          console.log("cherry down");
         });
 
         cherry.on('mouseup touchend', function() {
-          console.log("cherry up");
+          getContent('cherry');
         });
 
 
         gate.on('mousedown touchstart', function() {
-          console.log("gate down");
         });
 
         gate.on('mouseup touchend', function() {
-          console.log("gate up");
+          getContent('ceremonialgate');
         });
 
 
         teaherb.on('mousedown touchstart', function() {
-          console.log("teaherb down");
         });
 
         teaherb.on('mouseup touchend', function() {
-          console.log("teaherb up");
+          getContent('teaherb');
         });
 
 
@@ -652,19 +737,339 @@
 
     </script>
 
-    <!-- CONTENT WINDOW BLOCK SAMPLE -->
-    <a class="fancybox" id="tester" href="#inline1" style="display: none;">OH SNAP!</a>
-    <div id="inline1" style="width:960px;display: none;">
-    <div class="scroll">
-    <h3>Etiam quis mi eu elit</h3>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br>
+    <div id="overlay"></div>
 
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br>
-
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
-    </p>
+    <div id="btn_back">
+      <img src="images/return_white.png"><br>
+      <span>Return</span>
     </div>
-  </div>
+
+    <a href="javascript:lightsOut();" style="display: none;">Lights out!</a>
+
+    <!-- JFG MAP CONTENT -->
+    <a id="space" class="fancybox" href="#fb_space" style="display: none;">OH SNAP!</a>
+    <div id="fb_space" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>SPACE</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        BLA BLA BLA
+      </p>
+      </div>
+    </div>
+
+    <a id="form" class="fancybox" href="#fb_form" style="display: none;">OH SNAP!</a>
+    <div id="fb_form" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>FORM</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="time" class="fancybox" href="#fb_time" style="display: none;">OH SNAP!</a>
+    <div id="fb_time" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>TIME</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="cherry" class="fancybox" href="#fb_cherry" style="display: none;">OH SNAP!</a>
+    <div id="fb_cherry" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Cherry Blossom Grove</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="azalea" class="fancybox" href="#fb_azalea" style="display: none;">OH SNAP!</a>
+    <div id="fb_azalea" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Azaleas</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="teaherb" class="fancybox" href="#fb_teaherb" style="display: none;">OH SNAP!</a>
+    <div id="fb_teaherb" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Tea and Herb Garden</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="bonsai" class="fancybox" href="#fb_bonsai" style="display: none;">OH SNAP!</a>
+    <div id="fb_bonsai" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Bonsai Exhibit</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <a id="ceremonialgate" class="fancybox" href="#fb_ceremonialgate" style="display: none;">OH SNAP!</a>
+    <div id="fb_ceremonialgate" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Ceremonial Gate</h3>
+      <p>
+        As opposed to makimono, which are meant to be unrolled laterally on a flat surface, a kakemono is intended to be hung against a wall as part of the interior decoration of a room. It is traditionally displayed in the tokonoma alcove of a room especially designed for the display of prized objects. When displayed in a chashitsu, or teahouse for the traditional tea ceremony, the choice of the kakemono and its complementary flower arrangement help set the spiritual mood of the ceremony. Often the kakemono used for this will bear calligraphy of a Zen phrase in the hand of a distinguished Zen master.<br><br>
+
+        In contrast to byōbu (folding screen) or shohekiga (wall paintings), kakemono can be easily and quickly changed to match the season or occasion.<br><br>
+
+        The kakemono was introduced to Japan during the Heian period, primarily for displaying Buddhist images for religious veneration, or as a vehicle to display calligraphy or poetry. From the Muromachi period, landscapes, flower and bird paintings, portraiture, and poetry became the favorite themes.<br><br>
+        
+        Modern calligraphy ranges from functional hand-lettered inscriptions and designs to fine-art pieces where the abstract expression of the handwritten mark may or may not compromise the legibility of the letters (Mediavilla 1996). Classical calligraphy differs from typography and non-classical hand-lettering, though a calligrapher may create all of these; characters are historically disciplined yet fluid and spontaneous, at the moment of writing (Pott 2006 and 2005; Zapf 2007 and 2006).
+      </p>
+      </div>
+    </div>
+
+    <!-- PANO: ROCK GARDEN CONTENT -->
+    <a id="nobedan" class="fancybox" href="#fb_nobedan" style="display: none;">Inline</a>
+    <div id="fb_nobedan" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Nobedan</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="fujidana" class="fancybox" href="#fb_fujidana" style="display: none;">Inline</a>
+    <div id="fb_fujidana" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Fujidana</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="wisteria" class="fancybox" href="#fb_wisteria" style="display: none;">Inline</a>
+    <div id="fb_wisteria" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Wisteria</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="rockgarden" class="fancybox" href="#fb_rockgarden" style="display: none;">Inline</a>
+    <div id="fb_rockgarden" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Rock Garden</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="koipond" class="fancybox" href="#fb_koipond" style="display: none;">Inline</a>
+    <div id="fb_koipond" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Koi Pond</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="deck" class="fancybox" href="#fb_deck" style="display: none;">Inline</a>
+    <div id="fb_deck" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Moon Viewing Deck</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="tsukubai" class="fancybox" href="#fb_tsukubai" style="display: none;">Inline</a>
+    <div id="fb_tsukubai" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Tsukubai</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="lantern" class="fancybox" href="#fb_lantern" style="display: none;">Inline</a>
+    <div id="fb_lantern" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Lantern</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="koifish" class="fancybox" href="#fb_koifish" style="display: none;">Inline</a>
+    <div id="fb_koifish" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Koi Fish</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <!-- PANO: CANYON CONTENT -->
+    <a id="dragonbridge" class="fancybox" href="#fb_dragonbridge" style="display: none;">Inline</a>
+    <div id="fb_dragonbridge" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Dragon Bridge</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="mapletree" class="fancybox" href="#fb_mapletree" style="display: none;">Inline</a>
+    <div id="fb_mapletree" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Japanese Maple Tree</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="viewingdeck" class="fancybox" href="#fb_viewingdeck" style="display: none;">Inline</a>
+    <div id="fb_viewingdeck" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Viewing Deck</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="blackpine" class="fancybox" href="#fb_blackpine" style="display: none;">Inline</a>
+    <div id="fb_blackpine" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Black Pine</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
+    <a id="drywaterfall" class="fancybox" href="#fb_drywaterfall" style="display: none;">Inline</a>
+    <div id="fb_drywaterfall" style="width:960px;display: none;">
+      <div class="scroll">
+      <h3>Dry Waterfall</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc. <br><br>
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc.
+      </p>
+      </div>
+    </div>
+
   </body>
 </html>
